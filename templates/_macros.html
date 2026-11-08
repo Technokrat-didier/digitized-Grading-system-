@@ -1,0 +1,49 @@
+{# Shared building blocks used by several pages #}
+
+{% macro grade_badge(grade) -%}
+    <span class="grade-badge grade-{{ grade }}">{{ grade }}</span>
+{%- endmacro %}
+
+{% macro student_table(rows, empty_message="No students found.") -%}
+<div class="table-wrap">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Admission No.</th>
+                <th>Student Name</th>
+                <th>Class</th>
+                <th>Average</th>
+                <th>Mean Grade</th>
+                <th class="no-print">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row.student.admission_number }}</td>
+                <td>{{ row.student.full_name }}</td>
+                <td>{{ row.student.class_name }}</td>
+                <td>{{ row.results.average_display if row.results else '—' }}</td>
+                <td>{{ grade_badge(row.results.mean_grade) if row.results else '—' }}</td>
+                <td class="no-print actions-cell">
+                    {% if row.results %}
+                        <a class="btn btn-small" href="{{ url_for('student_results', student_id=row.student.id) }}">View Results</a>
+                    {% else %}
+                        <a class="btn btn-small" href="{{ url_for('enter_marks', student_id=row.student.id) }}">Enter Marks</a>
+                    {% endif %}
+                    <a class="btn btn-small btn-outline" href="{{ url_for('enter_marks', student_id=row.student.id) }}">Marks</a>
+                    <a class="btn btn-small btn-outline" href="{{ url_for('edit_student', student_id=row.student.id) }}">Edit</a>
+                    <form method="post" action="{{ url_for('delete_student', student_id=row.student.id) }}"
+                          class="inline-form delete-form"
+                          data-confirm="Delete {{ row.student.full_name }} ({{ row.student.admission_number }})? This also removes their subject records.">
+                        <button type="submit" class="btn btn-small btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6" class="empty-row">{{ empty_message }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{%- endmacro %}

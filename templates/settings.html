@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+{% block page_title %}Settings{% endblock %}
+
+{% block content %}
+<div class="card form-card">
+    <h2>School Settings</h2>
+    <p class="muted">The school name appears in the navigation and on every printed report.</p>
+    <form method="post">
+        <div class="form-group">
+            <label for="school_name">School Name *</label>
+            <input type="text" id="school_name" name="school_name" value="{{ school_name }}" required maxlength="120">
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn">Save Settings</button>
+        </div>
+    </form>
+
+    <h3 class="settings-heading">Grading Scale</h3>
+    <table class="data-table scale-table">
+        <thead><tr><th>Marks</th><th>Grade</th></tr></thead>
+        <tbody>
+            <tr><td>80 – 100</td><td>A</td></tr>
+            <tr><td>70 – 79</td><td>B</td></tr>
+            <tr><td>60 – 69</td><td>C</td></tr>
+            <tr><td>50 – 59</td><td>D</td></tr>
+            <tr><td>40 – 49</td><td>E</td></tr>
+            <tr><td>0 – 39</td><td>F</td></tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

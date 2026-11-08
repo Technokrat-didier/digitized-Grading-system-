@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Not Found{% endblock %}
+{% block page_title %}Page Not Found{% endblock %}
+
+{% block content %}
+<div class="card form-card">
+    <h2>404 — Not Found</h2>
+    <p class="muted">The page or student record you requested does not exist.</p>
+    <a class="btn" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</div>
+{% endblock %}

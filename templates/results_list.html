@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% from "_macros.html" import grade_badge %}
+{% block title %}Results &amp; Reports{% endblock %}
+{% block page_title %}Results &amp; Reports{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Recorded Results (ranked by average)</h2>
+    </div>
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Admission No.</th>
+                    <th>Student Name</th>
+                    <th>Class</th>
+                    <th>Subjects</th>
+                    <th>Average</th>
+                    <th>Mean Grade</th>
+                    <th class="no-print">Report</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ row.student.admission_number }}</td>
+                    <td>{{ row.student.full_name }}</td>
+                    <td>{{ row.student.class_name }}</td>
+                    <td>{{ row.results.count }}</td>
+                    <td>{{ row.results.average_display }}</td>
+                    <td>{{ grade_badge(row.results.mean_grade) }}</td>
+                    <td class="no-print">
+                        <a class="btn btn-small" href="{{ url_for('student_results', student_id=row.student.id) }}">View Report</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="8" class="empty-row">No results recorded yet. Register a student and enter their marks.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

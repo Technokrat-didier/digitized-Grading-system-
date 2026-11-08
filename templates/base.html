@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}School Grading System{% endblock %} | {{ school_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="layout">
+    <!-- Sidebar navigation (hidden when printing) -->
+    <aside class="sidebar no-print" id="sidebar">
+        <div class="brand">
+            <div class="brand-icon">SG</div>
+            <div>
+                <div class="brand-name">Grade Manager</div>
+                <div class="brand-school">{{ school_name }}</div>
+            </div>
+        </div>
+        <nav class="nav">
+            <a href="{{ url_for('dashboard') }}" class="nav-link {{ 'active' if active_page == 'dashboard' }}">
+                <span class="nav-icon">&#9632;</span> Dashboard
+            </a>
+            <a href="{{ url_for('register_student') }}" class="nav-link {{ 'active' if active_page == 'register' }}">
+                <span class="nav-icon">+</span> Register Student
+            </a>
+            <a href="{{ url_for('students') }}" class="nav-link {{ 'active' if active_page == 'students' }}">
+                <span class="nav-icon">&#9776;</span> Student Records
+            </a>
+            <a href="{{ url_for('results_and_reports') }}" class="nav-link {{ 'active' if active_page == 'results' }}">
+                <span class="nav-icon">&#9733;</span> Results &amp; Reports
+            </a>
+            <a href="{{ url_for('settings') }}" class="nav-link {{ 'active' if active_page == 'settings' }}">
+                <span class="nav-icon">&#9881;</span> Settings
+            </a>
+        </nav>
+    </aside>
+
+    <div class="main">
+        <header class="topbar no-print">
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">&#9776;</button>
+            <h1 class="page-title">{% block page_title %}Dashboard{% endblock %}</h1>
+        </header>
+
+        <!-- Flash messages: success and validation errors -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flashes no-print">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <main class="content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% from "_macros.html" import student_table %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="cards">
+    <div class="card stat-card">
+        <div class="stat-label">Registered Students</div>
+        <div class="stat-value">{{ total_students }}</div>
+    </div>
+    <div class="card stat-card">
+        <div class="stat-label">Students with Results</div>
+        <div class="stat-value">{{ students_with_results }}</div>
+    </div>
+    <div class="card stat-card">
+        <div class="stat-label">Overall Average</div>
+        <div class="stat-value">{{ overall_average if overall_average is not none else '—' }}</div>
+    </div>
+    <div class="card stat-card">
+        <div class="stat-label">Highest-Performing Student</div>
+        {% if top_student %}
+            <div class="stat-value stat-value-name">{{ top_student.student.full_name }}</div>
+            <div class="stat-sub">Average {{ top_student.results.average_display }} ({{ top_student.results.mean_grade }})</div>
+        {% else %}
+            <div class="stat-value">—</div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2>Student Records</h2>
+        <a class="btn no-print" href="{{ url_for('register_student') }}">+ Register Student</a>
+    </div>
+    {{ student_table(rows, "No students registered yet. Use 'Register Student' to add the first one.") }}
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Enter Marks{% endblock %}
+{% block page_title %}Enter Examination Marks{% endblock %}
+
+{% block content %}
+<div class="card form-card">
+    <h2>{{ student.full_name }} <span class="muted">({{ student.admission_number }})</span></h2>
+    <p class="muted">{{ student.class_name }} &middot; {{ student.academic_year }} &middot;
+        Maximum {{ max_subjects }} subjects, marks between 0 and 100.</p>
+
+    <form method="post" id="marks-form" novalidate data-max-subjects="{{ max_subjects }}">
+        <div id="subject-rows">
+            {% for subject in subjects %}
+            <div class="subject-row">
+                <div class="form-group">
+                    <label>Subject Name</label>
+                    <input type="text" name="subject_name" value="{{ subject.subject_name }}" placeholder="e.g. Mathematics" maxlength="80">
+                </div>
+                <div class="form-group">
+                    <label>Marks (0–100)</label>
+                    <input type="number" name="marks" value="{{ subject.marks|fmt_mark }}" min="0" max="100" step="any" placeholder="0–100">
+                </div>
+                <button type="button" class="btn btn-danger remove-subject" title="Remove subject">&times;</button>
+            </div>
+            {% else %}
+            <div class="subject-row">
+                <div class="form-group">
+                    <label>Subject Name</label>
+                    <input type="text" name="subject_name" placeholder="e.g. Mathematics" maxlength="80">
+                </div>
+                <div class="form-group">
+                    <label>Marks (0–100)</label>
+                    <input type="number" name="marks" min="0" max="100" step="any" placeholder="0–100">
+                </div>
+                <button type="button" class="btn btn-danger remove-subject" title="Remove subject">&times;</button>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="form-error" id="marks-form-error" hidden></div>
+
+        <div class="form-actions">
+            <button type="button" class="btn btn-outline" id="add-subject">+ Add Subject</button>
+            <span class="muted" id="subject-count"></span>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn">Save Results</button>
+            <a class="btn btn-outline" href="{{ url_for('students') }}">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<!-- Blueprint for new subject rows added by JavaScript -->
+<template id="subject-row-template">
+    <div class="subject-row">
+        <div class="form-group">
+            <label>Subject Name</label>
+            <input type="text" name="subject_name" placeholder="e.g. Mathematics" maxlength="80">
+        </div>
+        <div class="form-group">
+            <label>Marks (0–100)</label>
+            <input type="number" name="marks" min="0" max="100" step="any" placeholder="0–100">
+        </div>
+        <button type="button" class="btn btn-danger remove-subject" title="Remove subject">&times;</button>
+    </div>
+</template>
+{% endblock %}
